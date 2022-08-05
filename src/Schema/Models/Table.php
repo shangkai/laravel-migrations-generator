@@ -40,4 +40,11 @@ interface Table extends Model
      * @return string|null
      */
     public function getCollation(): ?string;
+
+    /**
+     * Get the table comment.
+     *
+     * @return string|null
+     */
+    public function getComment(): ?string;
 }
