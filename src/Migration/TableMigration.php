@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use KitLoong\MigrationsGenerator\Enum\Driver;
 use KitLoong\MigrationsGenerator\Enum\Migrations\Method\SchemaBuilder;
 use KitLoong\MigrationsGenerator\Enum\Migrations\Property\TableProperty;
+use KitLoong\MigrationsGenerator\Migration\Blueprint\Method;
 use KitLoong\MigrationsGenerator\Migration\Blueprint\SchemaBlueprint;
 use KitLoong\MigrationsGenerator\Migration\Blueprint\TableBlueprint;
 use KitLoong\MigrationsGenerator\Migration\Generator\ColumnGenerator;
@@ -41,6 +42,10 @@ class TableMigration
         $up = $this->getSchemaBlueprint($table, SchemaBuilder::CREATE());
 
         $blueprint = new TableBlueprint();
+        $comment = $table->getComment();
+        if (strlen($comment) > 0) {
+            $blueprint->setMethod(new Method('comment', $comment));
+        }
 
         if ($this->shouldSetCharset()) {
             $blueprint = $this->setTableCharset($blueprint, $table);

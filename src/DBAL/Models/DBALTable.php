@@ -28,6 +28,11 @@ abstract class DBALTable implements Table
     protected $name;
 
     /**
+     * @var string
+     */
+    protected $comment;
+
+    /**
      * @var \Illuminate\Support\Collection<\KitLoong\MigrationsGenerator\Schema\Models\Index>
      */
     protected $indexes;
@@ -42,6 +47,7 @@ abstract class DBALTable implements Table
     public function __construct(DoctrineDBALTable $table, array $columns, array $indexes)
     {
         $this->name      = $table->getName();
+        $this->comment   = $table->getComment();
         $this->collation = $table->getOptions()['collation'] ?? null;
         $this->columns   = (new Collection($columns))->map(function (DoctrineDBALColumn $column) use ($table) {
             return $this->makeColumn($table->getName(), $column);
@@ -108,5 +114,13 @@ abstract class DBALTable implements Table
     public function getCollation(): ?string
     {
         return $this->collation;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getComment(): ?string
+    {
+        return $this->comment;
     }
 }
